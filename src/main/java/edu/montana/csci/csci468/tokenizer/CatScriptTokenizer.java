@@ -44,6 +44,11 @@ public class CatScriptTokenizer {
             int start = postion;
             postion++;
             while(peek()!= '"' && !tokenizationEnd()){
+                if (matchAndConsume('\\')){
+                    if (matchAndConsume('\"')){
+
+                    }
+                }
                 postion++;
             }
             if (tokenizationEnd()){
