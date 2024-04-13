@@ -70,7 +70,17 @@ public class IfStatement extends Statement {
     //==============================================================
     @Override
     public void execute(CatscriptRuntime runtime) {
-        super.execute(runtime);
+        Boolean evaluate = (Boolean) expression.evaluate(runtime);
+
+        if (evaluate == true){
+            for (Statement tStates : trueStatements ){
+                tStates.execute(runtime);
+            }
+        }else {
+            for (Statement eStates : elseStatements){
+                eStates.execute(runtime);
+            }
+        }
     }
 
     @Override
