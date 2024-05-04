@@ -7,6 +7,8 @@ import edu.montana.csci.csci468.parser.ErrorType;
 import edu.montana.csci.csci468.parser.ParseError;
 import edu.montana.csci.csci468.parser.SymbolTable;
 import edu.montana.csci.csci468.parser.expressions.Expression;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +96,33 @@ public class ForStatement extends Statement {
 
     @Override
     public void compile(ByteCodeGenerator code) {
+        Integer iteratorSlot = code.nextLocalStorageSlot();
+        Integer loopVariableSlot = code.createLocalStorageSlotFor(variableName);
+        Label startOfLoop = new Label();
+        Label endOfLoop = new Label();
+
+        // compile the expression - leaves a list on top of the op stack
+        //invoke INTERFACE java/util/List.iterator ()Ljava/util/Iterator
+        // store that iterator into the iterator slot
+
+        // add startOfLoop Label (to jump back to at the end of the loop)
+        // Aload the iterator slot
+        //invoke INTERFACE hasNext
+        // IFEQ jump to endOfLoop Label
+
+        //ALOAD the iterater again
+        //call next() on it
+        // do a checkcast
+        code.addTypeInstruction(Opcodes.CHECKCAST, ByteCodeGenerator.internalNameFor(getComponentType().getJavaType()));
+        //save that into the loop var slot (might be a boolean/ int or a Reference)
+
+        //compile loop body statement
+
+        // goto start of loop
+
+        // add endOfLoop Label
+
+
         super.compile(code);
     }
 

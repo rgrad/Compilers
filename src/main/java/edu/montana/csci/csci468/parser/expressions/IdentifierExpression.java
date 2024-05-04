@@ -6,6 +6,7 @@ import edu.montana.csci.csci468.parser.CatscriptType;
 import edu.montana.csci.csci468.parser.ErrorType;
 import edu.montana.csci.csci468.parser.ParseError;
 import edu.montana.csci.csci468.parser.SymbolTable;
+import org.objectweb.asm.Opcodes;
 
 public class IdentifierExpression extends Expression {
     private final String name;
@@ -51,7 +52,29 @@ public class IdentifierExpression extends Expression {
 
     @Override
     public void compile(ByteCodeGenerator code) {
-        super.compile(code);
+        Integer i = code.resolveLocalStorageSlotFor(name);
+
+        if (i != null){
+
+            if (getType().equals(CatscriptType.INT) || getType().equals(CatscriptType.BOOLEAN)){
+                code.addVarInstruction(Opcodes.ILOAD, i);
+            }else {
+                code.addVarInstruction(Opcodes.ALOAD, i);
+            }
+
+        }else {
+            code.addVarInstruction(Opcodes.ALOAD, 0);//this feels wrong to me
+            if (getType().equals(CatscriptType.INT) || getType().equals(CatscriptType.BOOLEAN)){
+                code.addFieldInstruction(Opcodes.GETFIELD, name, "I", code.getProgramInternalName());
+            }else {
+                String desc = "L";
+                desc.concat(ByteCodeGenerator.internalNameFor(getType().getJavaType()));// my fucked up way of getting the descriptor
+
+                code.addFieldInstruction(Opcodes.GETFIELD, name, desc, code.getProgramInternalName());// the type is wrong
+            }
+        }
+
+
     }
 
 

@@ -31,7 +31,7 @@ public class CatscriptStatementExecutionTest extends CatscriptTestBase {
         assertEquals("1\n", compile("var x = 1\n" +
                 "var y = x\n" +
                 "print(y)"));
-        assertEquals("null\n", compile("var x = null\n" +
+        assertEquals("null\n", compile("var x = null\n" + //assertEquals("null\n", compile("var x = null\n"
                 "print(x)"));
     }
 

@@ -56,6 +56,7 @@ public class AssignmentStatement extends Statement {
 
     @Override
     public void compile(ByteCodeGenerator code) {
+        // very similar to var statement
         super.compile(code);
     }
 }
