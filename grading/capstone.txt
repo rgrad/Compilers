@@ -1,4 +1,1 @@
-Errors:
-
-- Missing source zip
-- Missing robert_grad_portfolio.pdf
+All Good
